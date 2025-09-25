@@ -1,0 +1,92 @@
+# Edge-VoMID 生产环境配置
+
+environment: production
+debug: false
+app_name: "Edge-VoMID"
+version: "1.0.0"
+
+# API配置
+api:
+  host: "0.0.0.0"
+  port: 8080
+  debug: false
+  max_file_size: 10485760  # 10MB
+  allowed_extensions: [".wav", ".mp3", ".flac", ".m4a", ".ogg"]
+  enable_cors: true
+  cors_origins: ["*"]
+  rate_limit: "1000/hour"
+  api_key_required: false
+
+# 存储配置
+storage:
+  type: "redis"  # memory, redis, file
+  file_path: "/app/data/voiceprints"
+  cache_size: 1000
+  cache_ttl: 3600
+  redis:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: null
+    max_connections: 100
+    socket_timeout: 5
+    socket_connect_timeout: 5
+
+# 负载均衡配置
+load_balancer:
+  strategy: "round_robin"  # round_robin, random, least_connections, weighted_round_robin, least_response_time
+  health_check_interval: 30
+  max_retries: 3
+  timeout: 30
+
+# 数据库配置
+database:
+  host: "postgres"
+  port: 5432
+  name: "voimid"
+  user: "voimid"
+  password: "voimid_password"
+  pool_size: 10
+  max_overflow: 20
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "<green>{time:YY-MM-DD HH:mm:ss.SSS}</green> - [<light-blue>{extra[tag]}</light-blue>] - <level>{level}</level> - <light-green>{message}</light-green>"
+  file_path: "/app/logs/server.log"
+  rotation: "100 MB"
+  retention: "7 days"
+  compression: "zip"
+  enqueue: true
+  backtrace: true
+  diagnose: true
+
+# 模型配置
+model:
+  name: "iic/speech_campplus_sv_zh-cn_3dspeaker_16k"
+  cache_dir: "/app/models"
+  device: "auto"  # auto, cpu, cuda
+  batch_size: 1
+  max_audio_length: 30  # 秒
+  min_audio_length: 1.0  # 秒
+
+# 安全配置
+security:
+  secret_key: ""  # 将从环境变量或自动生成
+  jwt_secret: ""  # 将从环境变量或自动生成
+  jwt_expiration: 3600  # 秒
+  password_min_length: 8
+  max_login_attempts: 5
+  lockout_duration: 300  # 秒
+  enable_rate_limiting: true
+  rate_limit_requests: 100
+  rate_limit_window: 3600  # 秒
+
+# 监控配置
+monitoring:
+  enable_metrics: true
+  metrics_port: 9090
+  enable_health_checks: true
+  health_check_interval: 30
+  enable_tracing: false
+  jaeger_endpoint: "http://localhost:14268/api/traces"

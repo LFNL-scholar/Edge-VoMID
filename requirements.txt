@@ -1,3 +1,4 @@
+# 核心依赖
 modelscope==1.11.0
 datasets==2.14.5
 numpy==1.23.5
@@ -9,3 +10,26 @@ sentencepiece==0.2.0
 soundfile==0.13.1
 torchaudio==2.2.2
 loguru==0.7.3
+
+# Web框架
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# 数据库和缓存
+redis==4.6.0
+psycopg2-binary==2.9.7
+
+# 系统监控
+psutil==5.9.6
+
+# 配置管理
+PyYAML==6.0.1
+
+# 开发和测试
+pytest==7.4.2
+pytest-cov==4.1.0
+requests==2.31.0
+
+# 可选依赖
+gunicorn==21.2.0
+gevent==23.7.0
